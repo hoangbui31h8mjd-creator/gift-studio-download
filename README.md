@@ -1,0 +1,21 @@
+# Gift Studio 下载测试页
+
+访问：https://hoangbui31h8mjd-creator.github.io/gift-studio-download/
+
+本仓库只承载公开下载网页及其视觉资源。桌面产品开发源码、个人配置、API Key 和完整内部交付包不在此仓库。两个平台的安装器以 GitHub Releases 附件分发，网页按钮指向对应附件。
+
+## 当前测试版本：0.1.0
+
+- Windows：Windows 10 / 11，x64，364,666,748 字节。
+- Mac：macOS 14+，Apple Silicon（M 系列），373,744,060 字节。不支持 Intel Mac。
+- Python、图像依赖和默认抠图模型已内置。AI 创作需联网，用户在应用内填写自己的 API Key。
+- Mac 为本地 ad-hoc 签名，未 Apple 公证；Windows 未发布者签名，仍需 Windows 实机安装与导出验收。本发布是测试分发，不代表已完成全平台正式验收。
+- 请阅读网站的安装指引，不要关闭系统全局安全保护。
+
+安装器 SHA256 见 `SHA256SUMS.txt`，更改或重新签名安装器后必须同步更新。
+
+## 许可与维护
+
+第三方声明位于 `third-party/` 和 `shader-background.js.LEGAL.txt`。保留各自许可，不将第三方代码统一重新许可。
+
+网页为静态文件，无后端，不接收用户 API Key。维护时只更新已审核的网页内容，不要上传桌面开发目录、用户数据、完整交付 ZIP 或凭据。

@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0e0b15">
+  <title>安装指引 · Gift Studio</title>
+  <link rel="icon" type="image/png" href="./assets/gift-studio-logo-rounded.png">
+  <link rel="stylesheet" href="./installation.css">
+</head>
+<body>
+  <main>
+    <a class="back" href="./">← 返回下载页</a>
+    <p class="eyebrow">GIFT STUDIO · 0.1.0</p>
+    <h1>安装，然后开始创作。</h1>
+    <p class="intro">Python、图像处理依赖和默认抠图模型已内置，无需自行安装。AI 生成功能需要联网，并在应用设置中填写你自己的 API Key。</p>
+    <section class="notice" aria-labelledby="notice-title">
+      <h2 id="notice-title">当前为公司内部测试版</h2>
+      <p>Mac 包采用本地签名，尚未取得 Apple 开发者签名和公证；Windows 包尚未取得发布者签名，首次启动可能出现系统安全提示。请只使用公司提供的可信下载，并遵循公司 IT 安装要求，不要关闭系统安全保护。</p>
+      <p>Mac 已在当前开发机完成安装包启动和本地图像处理测试；Windows 安装包已构建并做静态校验，仍需公司在 Windows 实机完成安装与导出验收。</p>
+    </section>
+    <div class="platforms">
+      <section>
+        <h2>Windows</h2>
+        <p class="meta">Windows 10 / 11，x64；不适用于 32 位系统</p>
+        <ol><li>下载并打开 <strong>.exe</strong> 安装文件。</li><li>按向导选择安装位置，完成后从桌面或开始菜单打开 Gift Studio。</li><li>若被公司策略或安全检查拦截，请联系 IT 确认，不要修改全局保护设置。</li></ol>
+      </section>
+      <section>
+        <h2>macOS</h2>
+        <p class="meta">macOS 14 或更高，Apple M 系列芯片；不支持 Intel Mac</p>
+        <ol><li>下载并打开 <strong>.dmg</strong> 磁盘映像。</li><li>将 Gift Studio 拖入 Applications，然后从“应用程序”打开；不要一直从安装映像运行。</li><li>若出现无法验证开发者的提示，请由公司 IT 确认可信来源后，按照系统“隐私与安全性”的单个应用放行流程处理。</li></ol>
+      </section>
+    </div>
+    <section>
+      <h2>首次使用与本地保存</h2>
+      <p>进入设置，填写 API Key 并保存。之后在同一电脑、同一系统账户打开时可继续使用，也可以在设置中显示、替换或删除。每个人的 Key 和工作数据保存在自己的本地用户目录，不上传到下载网站，也不会包含在其他人的安装包中。</p>
+      <p>关闭窗口会保留后台工作；再次点击应用图标或快捷方式可以回到工作台。要彻底退出，请使用应用菜单中的“退出 Gift Studio”。处理或导出尚未完成时，应用会提示先等待任务完成。</p>
+      <p>升级安装通常保留用户数据；卸载不会主动删除 Key 和工作记录。如需清除，请先在设置中删除 Key，并通过应用菜单打开本地数据目录，按公司要求备份和清理。</p>
+    </section>
+    <footer>Gift Studio · 直播礼物创作工作台</footer>
+  </main>
+</body>
+</html>

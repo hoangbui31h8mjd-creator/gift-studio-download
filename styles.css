@@ -1,0 +1,56 @@
+:root{color-scheme:dark;--bg:#0e0b15;--text:#f5f1fc;--muted:#c8bfd6;--subtle:#b0a4c2;--purple:#bf94ff;--line:rgba(215,196,247,.14);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;font-size:calc(100% * var(--layout-scale, 1))}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:2rem}
+body{margin:0;background:var(--bg);color:var(--text);min-width:17.5rem;min-height:100vh;position:relative;isolation:isolate;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button,a{-webkit-tap-highlight-color:transparent}
+a:focus-visible{outline:0.1875rem solid var(--purple);outline-offset:0.3125rem}
+[hidden]{display:none!important}
+.skip-link{position:absolute;top:0.75rem;left:0.75rem;z-index:10;padding:0.625rem 1.125rem;background:#302d42;color:var(--text);border-radius:0.5rem;transform:translateY(-180%)}
+.skip-link:focus{transform:none}
+.site-header{max-width:70rem;margin:0 auto;height:5.75rem;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 0.25rem}
+.brand{display:inline-flex;align-items:center;gap:0.6875rem;font-size:1.125rem;font-weight:620;letter-spacing:-.4px}
+.brand-icon{width:1.9375rem;height:1.9375rem;object-fit:contain}
+nav{display:flex;align-items:center;gap:2.125rem;font-size:0.875rem;color:#b4b1c2}
+nav a{transition:color .18s}nav a:hover,nav [aria-current]{color:#f3f1fa}nav span{margin-left:0.25rem;color:#aaa3bd}
+main{max-width:51.5rem;margin:0 auto;padding:0 1.25rem}
+.download-section{padding-top:3rem}
+.hero{text-align:center}
+.app-icon{width:4.875rem;height:4.875rem;display:block;margin:0 auto 1.5625rem;object-fit:contain}
+.app-icon,.brand-icon{object-fit:contain}
+.eyebrow{margin:0 0 0.875rem;font-size:0.75rem;letter-spacing:0.1625rem;font-weight:600;color:#b09edc}
+h1{margin:0;font-size:clamp(2.25rem,4.5vw,3.625rem);font-weight:620;letter-spacing:-0.125rem;line-height:1.2}
+h1 span{color:inherit}
+.hero-description{margin:1.25rem 0 0;font-size:1rem;line-height:1.8;color:var(--muted);letter-spacing:.2px}
+.mobile-break{display:none}
+.platforms{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.25rem;margin-top:2rem}
+.platform-card{padding:1.6875rem 1.8125rem 1.6875rem}
+.platform-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem}
+.platform-icon{width:2.1875rem;height:2.1875rem;color:#e2dfed}.windows-icon{width:1.9375rem;height:1.9375rem;margin:0.125rem}
+.platform-card h2{font-size:1.5625rem;letter-spacing:-.6px;margin:0 0 0.4375rem;font-weight:600}
+.platform-description{font-size:0.875rem;line-height:1.6;color:var(--muted);margin:0 0 1.5rem}
+.download-button{display:flex;align-items:center;justify-content:center;gap:0.5625rem;width:100%;min-height:2.9375rem;padding:0.75rem 0.5rem;border-radius:0.625rem;border:1px solid #ffffff24;font-size:0.9375rem;font-weight:600;background:#ffffff0a;color:#c9c4d2;cursor:pointer;box-shadow:inset 0 1px 0 #ffffff0c;transition:background .2s,color .2s,border-color .2s,box-shadow .2s,transform .2s}
+.download-button svg{width:1.125rem;height:1.125rem;flex-shrink:0}
+.download-button:focus-visible{background:#ffffff17;color:#fff;border-color:#ffffff66;box-shadow:inset 0 1px 0 #ffffff26,0 0.25rem 1.125rem #ffffff0d}
+@media(hover:hover){.download-button:hover{background:#ffffff17;color:#fff;border-color:#ffffff66;box-shadow:inset 0 1px 0 #ffffff26,0 0.25rem 1.125rem #ffffff0d;transform:scale(1.025)}}
+.download-button:active{transform:scale(1)}
+.availability-note{text-align:center;font-size:0.8125rem;line-height:1.7;color:#aaa6b9;margin:1.125rem 0 0}
+.start-section{margin-top:1.75rem;padding:1.5rem 0 0;border-top:1px solid #e8e1ff2e;scroll-margin-top:1.875rem;color:#f5f2fc}
+.section-heading{display:flex;align-items:center;justify-content:space-between;gap:1.25rem}
+.section-heading h2{font-size:1.125rem;font-weight:550;margin:0;letter-spacing:.2px}.section-heading>span{font-size:0.75rem;color:var(--subtle)}
+.steps{list-style:none;padding:0;margin:1.6875rem 0 1.5625rem;display:grid;grid-template-columns:repeat(3,1fr);gap:1.4375rem}
+.steps li{display:flex;gap:0.75rem}
+.step-number{font-size:0.75rem;line-height:1.5rem;color:#b9a3ef;font-variant-numeric:tabular-nums}
+.steps h3{font-size:0.875rem;line-height:1.5rem;font-weight:550;margin:0 0 0.5rem;color:#f0edf6}.steps p{font-size:0.8125rem;line-height:1.85;color:var(--subtle);margin:0}
+.key-note{display:flex;align-items:center;justify-content:center;gap:0.4375rem;font-size:0.75rem;line-height:1.8;color:var(--subtle);margin:0;padding:1.125rem 0 0;border-top:1px solid #e8e1ff17}.key-note svg{width:0.875rem;height:0.875rem;flex-shrink:0}
+.site-footer{max-width:70rem;margin:1.25rem auto 0;padding:1.375rem 0.25rem 1.5rem;border-top:1px solid #e8e1ff24;display:flex;justify-content:space-between;color:#b4aebe;font-size:0.75rem;letter-spacing:.2px}
+/* Lower the desktop content group while keeping the header and footer anchored.
+   Content keeps its intrinsic height, so short windows can still scroll. */
+@media(min-width:760px){body{display:flex;flex-direction:column}.site-header,.site-footer{width:calc(100% - 4rem);flex-shrink:0}main{width:100%;flex:1 0 auto}.download-section{padding-top:4.25rem}.platforms{margin-top:3.5rem}.start-section{margin-top:2.625rem}.steps{margin-bottom:0}}
+@media(min-width:760px) and (max-height:850px){.site-header{height:4.75rem}.download-section{padding-top:1.75rem}.platforms{margin-top:1.5rem}.platform-card{padding-top:1.4375rem;padding-bottom:1.4375rem}.hero-description{margin-top:1rem}.start-section{margin-top:1.5rem;padding-top:1.25rem}.steps{margin-top:1.375rem}.site-footer{margin-top:0.75rem;padding-top:0.875rem;padding-bottom:1rem}}
+/* Keep the existing 2.5rem edge glow inside narrower two-column windows. */
+@media(min-width:601px) and (max-width:863px){main{padding-left:2.5rem;padding-right:2.5rem}}
+@media(max-width:1190px){.site-header,.site-footer{margin-left:2rem;margin-right:2rem}}
+@media(max-width:600px){.site-header{height:4.75rem;margin:0 1.375rem}.brand{font-size:1rem}.brand-icon{width:1.75rem;height:1.75rem;border-radius:0.5625rem}nav{gap:1.25rem;font-size:0.8125rem}nav a:first-child{display:none}main{padding:0 1.5rem}.download-section{padding-top:2.75rem}.app-icon{width:4rem;height:4rem;border-radius:1.1875rem;margin-bottom:1.4375rem}.app-icon span{font-size:2.5rem}.eyebrow{font-size:0.625rem;letter-spacing:0.125rem}h1{font-size:2.3125rem;letter-spacing:-0.10625rem}.hero-description{font-size:0.875rem;line-height:1.85;margin-top:1rem}.mobile-break{display:block}.platforms{grid-template-columns:1fr;gap:1rem;margin-top:2rem}.platform-card{padding:1.4375rem 1.5rem 1.125rem}.platform-top{margin-bottom:1.0625rem}.platform-description{margin-bottom:1.25rem}.availability-note{font-size:0.75rem}.start-section{margin-top:2.3125rem;padding-top:1.625rem}.section-heading>span{display:none}.steps{grid-template-columns:1fr;gap:1.4375rem;margin:1.5625rem 0}.steps li{gap:1.125rem}.steps p br{display:none}.steps p{font-size:0.875rem}.steps h3{font-size:0.9375rem;margin-bottom:0.1875rem}.step-number{line-height:1.625rem}.key-note{justify-content:flex-start;font-size:0.75rem;align-items:flex-start}.key-note svg{margin-top:0.25rem}.site-footer{margin:2rem 1.5rem 0;padding-bottom:1.5rem;font-size:0.6875rem}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition:none!important}.platform-card:hover,.download-button:hover,.download-button:active{transform:none}}
+@media(max-width:600px){.eyebrow,.site-footer{font-size:0.75rem}}

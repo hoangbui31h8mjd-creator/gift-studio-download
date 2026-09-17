@@ -1,0 +1,22 @@
+ShaderGradient environment maps (CC0)
+
+Official source snapshot:
+https://github.com/ruucm/shadergradient/tree/974a230b1e6c3ec375fbe17a8ea1c89edbc48019/packages/ui/assets/hdr
+
+city.hdr: Potsdamer Platz — Greg Zaal
+https://polyhaven.com/a/potsdamer_platz
+MD5 d568c71e3cf00329f3ca32582f99338b
+
+dawn.hdr: Kiara 1 Dawn — Greg Zaal
+https://polyhaven.com/a/kiara_1_dawn
+MD5 fcefd321c51b468ead9d5e1a369a3735
+
+lobby.hdr: St. Fagans Interior — Morgan Evans
+https://polyhaven.com/a/st_fagans_interior
+MD5 937ea0620f22d026a14710f2e1343498
+
+License: CC0 1.0 Universal
+https://polyhaven.com/license
+https://creativecommons.org/publicdomain/zero/1.0/
+
+All three are loaded by the upstream renderer, including when envPreset=city.

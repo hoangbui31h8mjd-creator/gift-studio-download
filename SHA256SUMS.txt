@@ -1,0 +1,2 @@
+6e1e7b08e402692d22b2427c7e9ba66027617ab3c571e2f84f31205e2892120c  Gift-Studio-0.1.0-mac-arm64.dmg
+8de5177bbd25e6edb1247b50f0a580d9c19561fed6e0b1f7e040369061e987be  Gift-Studio-0.1.0-windows-x64-setup.exe

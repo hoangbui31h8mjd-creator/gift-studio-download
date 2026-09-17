@@ -1,0 +1,40 @@
+/* Translucent card surfaces. BorderGlow geometry,
+   colors, proximity tracking and the outer edge-light remain unchanged. */
+.brand-icon { border-radius: 0.5rem; }
+.app-icon { border-radius: 1.1875rem; }
+
+.border-glow-card {
+  background: rgb(24 17 37 / 50%);
+  -webkit-backdrop-filter: blur(1.375rem) saturate(112%);
+  backdrop-filter: blur(1.375rem) saturate(112%);
+}
+
+/* The original opaque padding fill hid the gradient underneath. Clip that
+   same directional color layer to its 1px border instead, so hovering does
+   not turn the new glass center opaque. Keep the original conic cone. */
+.border-glow-card::before {
+  mask-image:
+    conic-gradient(from var(--cursor-angle) at center,
+      black calc(var(--cone-spread) * 1%),
+      transparent calc((var(--cone-spread) + 15) * 1%),
+      transparent calc((100 - var(--cone-spread) - 15) * 1%),
+      black calc((100 - var(--cone-spread)) * 1%)),
+    linear-gradient(black, black),
+    linear-gradient(black, black);
+  mask-clip: border-box, border-box, padding-box;
+  mask-composite: intersect, exclude;
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .border-glow-card { background: rgb(24 17 37 / 94%); }
+}
+
+@media (forced-colors: active) {
+  .border-glow-card {
+    background: Canvas;
+    border-color: CanvasText;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    box-shadow: none;
+  }
+}

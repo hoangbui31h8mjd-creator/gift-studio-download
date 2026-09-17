@@ -1,0 +1,12 @@
+.DS_Store
+node_modules/
+downloads/
+*.exe
+*.dmg
+*.zip
+*.7z
+*.log
+.env*
+config/
+app-api-keys/
+desktop-source/

@@ -1,0 +1,18 @@
+.shader-background {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  background: #000;
+}
+.shader-background canvas { display: block; }
+.shader-background::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgb(0 0 0 / 24%);
+}
+@media (forced-colors: active) {
+  .shader-background { display: none; }
+}

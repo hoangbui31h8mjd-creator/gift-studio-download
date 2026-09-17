@@ -1,0 +1,179 @@
+/* Only opted-in labels change. The existing arrow and 60 × 44 follow bounds stay intact. */
+.gift-cursor-label[data-variant] {
+  width: 60px;
+  height: 44px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  filter: none;
+  overflow: visible;
+}
+
+.gift-cursor-label[data-variant] .cursor-toy-motion {
+  display: block;
+  position: relative;
+  width: 36px;
+  height: 36px;
+  transform-origin: 50% 50%;
+  transform: rotate(var(--trail-angle, 0deg))
+    scale(var(--trail-stretch, 1), var(--trail-squash, 1))
+    rotate(calc(-1 * var(--trail-angle, 0deg)));
+  will-change: transform;
+}
+
+/* Keep the star's four arms legible under the same spring deformation. */
+.gift-cursor-label[data-variant="star"] .cursor-toy-motion {
+  transform: rotate(var(--trail-angle, 0deg))
+    scale(calc(1 + (var(--trail-stretch, 1) - 1) * .66),
+      calc(1 + (var(--trail-squash, 1) - 1) * .66))
+    rotate(calc(-1 * var(--trail-angle, 0deg)));
+}
+
+.gift-cursor-label[data-variant] .cursor-toy {
+  display: block;
+  position: relative;
+  width: 36px;
+  height: 36px;
+  overflow: visible;
+}
+
+.gift-cursor-label[data-variant] .cursor-toy svg {
+  display: block;
+  position: relative;
+  width: 36px;
+  height: 36px;
+  overflow: visible;
+  /* Shadow is confined to the SVG sibling, so the glass can sample the page. */
+  filter: drop-shadow(0 2px 2.5px rgb(5 4 20 / 26%));
+}
+
+.gift-cursor-label[data-variant] .toy-glass-backdrop {
+  display: block;
+  position: absolute;
+  inset: 0;
+  background: rgb(255 255 255 / 5%);
+  -webkit-backdrop-filter: blur(6px) saturate(1.1);
+  backdrop-filter: blur(6px) saturate(1.1);
+  clip-path: var(--toy-shape);
+}
+
+.gift-cursor-label[data-variant] .cursor-toy-star {
+  --toy-shape: path("M18 1.7C19.9 1.7 20.1 8.1 23.1 11.1C26.1 14.1 34.3 15.8 34.3 18C34.3 20.2 26.1 21.9 23.1 24.9C20.1 27.9 19.9 34.3 18 34.3C16.1 34.3 15.9 27.9 12.9 24.9C9.9 21.9 1.7 20.2 1.7 18C1.7 15.8 9.9 14.1 12.9 11.1C15.9 8.1 16.1 1.7 18 1.7Z");
+}
+
+.gift-cursor-label[data-variant] .cursor-toy-droplet {
+  --toy-shape: path("M23.9 2.8C27.6 2 28.6 7.5 30.5 12.4C32.6 17.8 33.8 22.5 30.8 27.4C27.7 32.5 21.4 34.4 15.3 33.1C8.8 31.7 4.3 27.1 4.1 21.3C3.9 15.2 8.3 11.7 13.3 9.2C17.3 7.2 20.2 3.6 23.9 2.8Z");
+}
+
+.gift-cursor-label[data-variant] .cursor-toy-droplet .toy-glass-backdrop {
+  -webkit-backdrop-filter: blur(8px) saturate(1.08);
+  backdrop-filter: blur(8px) saturate(1.08);
+}
+
+.gift-cursor-label[data-variant] .gift-toy-body,
+.gift-cursor-label[data-variant] .gift-toy-lid {
+  display: block;
+  position: absolute;
+  inset: 0;
+}
+
+.gift-cursor-label[data-variant] .gift-toy-body {
+  --toy-shape: path("M6.3 15.7H29.7V28.6C29.7 31.7 28.1 33.1 25.1 33.1H10.9C7.9 33.1 6.3 31.7 6.3 28.6Z");
+}
+
+.gift-cursor-label[data-variant] .gift-toy-lid {
+  --toy-shape: path("M7 11.1H29A2.7 2.7 0 0 1 31.7 13.8V15.6A2.7 2.7 0 0 1 29 18.3H7A2.7 2.7 0 0 1 4.3 15.6V13.8A2.7 2.7 0 0 1 7 11.1Z");
+  transform-origin: 8px 17px;
+  transform: translate(0, 0) rotate(0deg);
+  transition: transform 340ms cubic-bezier(.22, .75, .22, 1);
+}
+
+.gift-cursor-label[data-variant] .gift-toy-glow {
+  display: block;
+  position: absolute;
+  left: 8px;
+  top: 11px;
+  width: 20px;
+  height: 9px;
+  /* A shallow light leak sits behind the opening, with no drawn rim or halo. */
+  background: linear-gradient(to top,
+    rgb(251 254 255 / 63%), rgb(231 244 255 / 31%) 37%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 23%, #000 77%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 23%, #000 77%, transparent);
+  filter: blur(1.15px);
+  opacity: 0;
+  transform-origin: 50% 100%;
+  transform: translateY(2px) scaleY(.35);
+  transition: opacity 230ms ease, transform 340ms cubic-bezier(.22, .75, .22, 1);
+}
+
+.gift-cursor-label[data-variant] .gift-toy-flow {
+  position: absolute;
+  inset: 0;
+  display: block;
+  overflow: hidden;
+  clip-path: var(--toy-shape);
+  opacity: 0;
+  transition: opacity 180ms ease;
+}
+
+/* Only this clipped layer moves; the gift's outline and glass remain still. */
+.gift-cursor-label[data-variant] .gift-toy-flow-light {
+  position: absolute;
+  left: -12px;
+  top: 10px;
+  display: block;
+  width: 8px;
+  height: 29px;
+  background: linear-gradient(to right,
+    transparent, rgb(225 242 255 / 18%) 25%,
+    rgb(250 254 255 / 72%) 50%, rgb(225 242 255 / 20%) 75%, transparent);
+  filter: blur(.65px);
+  transform: translateX(0) skewX(-18deg);
+  opacity: 0;
+  animation: none;
+}
+
+.gift-cursor-label[data-variant="gift"].is-open .gift-toy-lid {
+  transform: translate(0, -7px) rotate(-10deg);
+}
+
+.gift-cursor-label[data-variant="gift"].is-open .gift-toy-glow {
+  opacity: .85;
+  transform: translateY(0) scale(1);
+}
+
+.gift-cursor-label[data-variant="gift"].is-open .gift-toy-flow {
+  opacity: 1;
+}
+
+.gift-cursor-label[data-variant="gift"].is-open .gift-toy-flow-light {
+  animation: gift-box-inner-sweep 700ms cubic-bezier(.35, 0, .2, 1) 100ms 1 both;
+}
+
+@keyframes gift-box-inner-sweep {
+  0% { transform: translateX(0) skewX(-18deg); opacity: 0; }
+  18% { opacity: .7; }
+  74% { opacity: .7; }
+  100% { transform: translateX(58px) skewX(-18deg); opacity: 0; }
+}
+
+/* Without path clipping, keep the SVG glass fallback and never show a square. */
+@supports not (clip-path: path("M0 0H1V1Z")) {
+  .gift-cursor-label[data-variant] .toy-glass-backdrop { display: none; }
+  .gift-cursor-label[data-variant="gift"] .gift-toy-flow { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gift-cursor-label[data-variant] .cursor-toy-motion { transform: none; }
+  .gift-cursor-label[data-variant] .gift-toy-lid,
+  .gift-cursor-label[data-variant] .gift-toy-glow,
+  .gift-cursor-label[data-variant] .gift-toy-flow { transition: none; }
+  .gift-cursor-label[data-variant="gift"].is-open .gift-toy-flow-light {
+    animation: none;
+    opacity: 0;
+  }
+}

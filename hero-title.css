@@ -1,0 +1,104 @@
+/* Smiley Sans v2.0.1 (unmodified): SIL OFL 1.1.
+ * Font license: ./third-party/smiley-sans-LICENSE.txt
+ * Text motion adapted from React Bits / David Haz: GradientText + BlurText.
+ * MIT + Commons Clause: ./third-party/react-bits-LICENSE.txt
+ * https://github.com/DavidHDev/react-bits/tree/main/src/content/TextAnimations
+ * Native CSS adaptation: staggered blur/translate entrance, then a yoyo
+ * multi-stop gradient. No Motion runtime or additional animation loop.
+ */
+@font-face {
+  font-family: "Smiley Sans";
+  src: url("./assets/fonts/smiley-sans.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+.hero .eyebrow {
+  margin-bottom: 1.25rem;
+}
+
+.hero-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0 .08em;
+  font-family: "Smiley Sans", "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: clamp(3.25rem, calc(var(--layout-vw, 1vw) * 5.4), 5rem);
+  font-weight: 400;
+  font-synthesis: none;
+  letter-spacing: .01em;
+  line-height: 1.28;
+  color: #f0eaff;
+}
+
+.headline-phrase {
+  display: inline-flex;
+  white-space: nowrap;
+}
+
+.headline-ink {
+  display: inline-block;
+  color: inherit;
+  padding: .03em .025em;
+  margin: -.03em -.025em;
+  animation: headline-reveal .72s cubic-bezier(.22, 1, .36, 1) calc(.12s + var(--i) * .065s) both;
+}
+
+@supports ((background-clip: text) or (-webkit-background-clip: text)) {
+  .headline-ink {
+    background-image: linear-gradient(105deg, #f6f0ff 0%, #c6e7ff 22%, #c1a0ff 45%, #f0d5ff 67%, #fff 82%, #f6f0ff 100%);
+    background-size: 300% 100%;
+    background-position: calc(var(--i) * 8%) 50%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation:
+      headline-reveal .72s cubic-bezier(.22, 1, .36, 1) calc(.12s + var(--i) * .065s) both,
+      headline-spectrum 7s ease-in-out 0s infinite alternate;
+  }
+}
+
+@keyframes headline-reveal {
+  from { opacity: 0; filter: blur(0.625rem); transform: translateY(1.5rem); }
+  65% { opacity: .85; filter: blur(0.125rem); transform: translateY(-0.125rem); }
+  to { opacity: 1; filter: blur(0); transform: translateY(0); }
+}
+
+@keyframes headline-spectrum {
+  from { background-position: calc(var(--i) * 8%) 50%; }
+  to { background-position: calc(100% + var(--i) * 8%) 50%; }
+}
+
+@media (max-width: 600px) {
+  .hero .eyebrow { margin-bottom: 1.125rem; }
+  .hero-title {
+    flex-direction: column;
+    font-size: clamp(2.5rem, calc(var(--layout-vw, 1vw) * 12), 3.625rem);
+    line-height: 1.22;
+    letter-spacing: .02em;
+    gap: .06em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .headline-ink {
+    animation: none;
+    opacity: 1;
+    filter: none;
+    transform: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .hero-title { color: CanvasText; }
+  .headline-ink {
+    animation: none;
+    background: none;
+    -webkit-text-fill-color: currentColor;
+    opacity: 1;
+    filter: none;
+    transform: none;
+  }
+}

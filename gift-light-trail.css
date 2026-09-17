@@ -1,0 +1,13 @@
+/* First child of the existing decorative cursor layer, below the arrow and gift. */
+.gift-cursor > .gift-light-trail {
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  user-select: none;
+}
+
+@media (prefers-reduced-motion: reduce), (forced-colors: active), (pointer: coarse), (hover: none) {
+  .gift-cursor > .gift-light-trail { display: none; }
+}
