@@ -1,4 +1,4 @@
-/* First child of the existing decorative cursor layer, below the arrow and gift. */
+/* First child of the decorative cursor layer, below the frosted arrow. */
 .gift-cursor > .gift-light-trail {
   display: block;
   position: fixed;
@@ -6,6 +6,7 @@
   left: 0;
   pointer-events: none;
   user-select: none;
+  mix-blend-mode: screen;
 }
 
 @media (prefers-reduced-motion: reduce), (forced-colors: active), (pointer: coarse), (hover: none) {

@@ -113,7 +113,7 @@
   // Rounded silhouette shared by the glass surface and its clipped light.
   // Neutral white highlights only: the blurred page supplies the glass color.
   const arrowShape = 'M7.2 3.4C3.65 2.05 1.75 3.7 3.05 7.25L8.55 22.15C9.7 25.45 12.45 25.6 13.85 22.35L15.75 17.95Q16.1 17.1 16.95 16.75L21.95 14.55C25.3 13.1 25.2 10.35 21.9 9.1Z';
-  // Fixed, local decorative markup; no remote assets, fonts or generated particles.
+  // Fixed local arrow markup. The empty label is populated only by opt-in previews.
   layer.innerHTML = `
     <span class="gift-cursor-arrow" style="--cursor-arrow-shape: path('${arrowShape}')">
       <svg viewBox="0 0 28 28" width="28" height="28" focusable="false">
@@ -143,29 +143,15 @@
           stroke-width=".85" stroke-linejoin="round"/>
       </svg>
     </span>
-    <span class="gift-cursor-label">
-      <svg class="gift-cursor-gift" viewBox="0 0 48 42" width="40" height="36" focusable="false">
-        <defs>
-          <linearGradient id="cursor-gift-body" x1="0" y1="0" x2="1" y2="1">
-            <stop stop-color="#bdc9ff"/><stop offset=".48" stop-color="#9888f5"/>
-            <stop offset="1" stop-color="#615bda" stop-opacity=".65"/>
-          </linearGradient>
-          <linearGradient id="cursor-gift-ribbon" x1="0" y1="0" x2="1" y2="1">
-            <stop stop-color="#f3efff"/><stop offset="1" stop-color="#b7caff" stop-opacity=".8"/>
-          </linearGradient>
-        </defs>
-        <path d="M23.5 12C13 13 9 8 12.5 5.5S21 7 23.5 12Zm1 0C35 13 39 8 35.5 5.5S27 7 24.5 12Z"
-          fill="none" stroke="url(#cursor-gift-ribbon)" stroke-width="3" stroke-linecap="round"/>
-        <rect x="9" y="18" width="30" height="21" rx="6" fill="url(#cursor-gift-body)" stroke="#d0c7ff" stroke-opacity=".55"/>
-        <rect x="7" y="12" width="34" height="10" rx="4" fill="url(#cursor-gift-body)" stroke="#e1dcff" stroke-opacity=".7"/>
-        <path d="M22 13h4v26h-4z" fill="url(#cursor-gift-ribbon)"/>
-        <path d="M12 25v7q0 3 3 3" fill="none" stroke="#e8e4ff" stroke-opacity=".45" stroke-linecap="round"/>
-      </svg>
-    </span>`;
+    <span class="gift-cursor-label"></span>`;
   const arrowNode = layer.querySelector('.gift-cursor-arrow');
   const labelNode = layer.querySelector('.gift-cursor-label');
   doc.body.append(layer);
-  const preview = root.GiftCursorPreview?.mount({ doc, labelNode });
+  // Gate previews here as well as in cursor-preview.js so a stale cached preview
+  // module can never restore a tangible default decoration.
+  const previewEnabled = new URLSearchParams(root.location?.search || '').get('cursor-preview') === '1';
+  const preview = previewEnabled ? root.GiftCursorPreview?.mount({ doc, labelNode }) : null;
+  labelNode.hidden = !preview;
 
   let follower = createFollower({ width: root.innerWidth, height: root.innerHeight });
   let frameId = null;
@@ -194,7 +180,7 @@
     if (!state.visible) return;
     previousTime = time;
     transform(arrowNode, state.arrow);
-    transform(labelNode, state.label);
+    if (preview) transform(labelNode, state.label);
     preview?.frame(state, delta);
     layer.hidden = false;
     // Hide the native cursor only after a positioned replacement is visible.

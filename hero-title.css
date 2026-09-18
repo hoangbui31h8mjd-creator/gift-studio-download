@@ -1,4 +1,5 @@
-/* Smiley Sans v2.0.1 (unmodified): SIL OFL 1.1.
+/* Heading-only subset derived from Smiley Sans v2.0.1: SIL OFL 1.1.
+ * Derivative renamed Gift Studio Headline; original glyph outlines unchanged.
  * Font license: ./third-party/smiley-sans-LICENSE.txt
  * Text motion adapted from React Bits / David Haz: GradientText + BlurText.
  * MIT + Commons Clause: ./third-party/react-bits-LICENSE.txt
@@ -7,8 +8,8 @@
  * multi-stop gradient. No Motion runtime or additional animation loop.
  */
 @font-face {
-  font-family: "Smiley Sans";
-  src: url("./assets/fonts/smiley-sans.woff2") format("woff2");
+  font-family: "Gift Studio Headline";
+  src: url("./assets/fonts/gift-studio-headline.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -24,7 +25,7 @@
   align-items: center;
   justify-content: center;
   gap: 0 .08em;
-  font-family: "Smiley Sans", "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-family: "Gift Studio Headline", "PingFang SC", "Microsoft YaHei", sans-serif;
   font-size: clamp(3.25rem, calc(var(--layout-vw, 1vw) * 5.4), 5rem);
   font-weight: 400;
   font-synthesis: none;

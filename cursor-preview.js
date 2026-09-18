@@ -1,4 +1,4 @@
-/* The chosen mini gift runs by default. Comparison controls remain opt-in. */
+/* Decorative comparison controls are opt-in; the ordinary page has no toy. */
 (function (root) {
   'use strict';
   const names = ['star', 'droplet', 'gift'];
@@ -78,9 +78,9 @@
   function mount({ doc, labelNode, variants = root.GiftCursorVariants, timers = root }) {
     const initial = readPreview(root.location?.search || '');
     if (!variants || !names.every(name => typeof variants[name] === 'string')) return null;
-    const controller = createController({ label: labelNode, variants, initial: initial || 'gift', timers });
+    if (!initial) return null;
+    const controller = createController({ label: labelNode, variants, initial, timers });
     const effect = controller;
-    if (!initial) return effect;
     const panel = doc.createElement('aside');
     panel.className = 'cursor-preview-panel';
     panel.setAttribute('aria-label', '鼠标跟随效果预览');

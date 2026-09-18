@@ -1,10 +1,14 @@
-/* A bounded, fading ribbon below the gift. The existing cursor owns scheduling. */
+/* Independent glow ribbon using the supplied appearance parameters.
+   No GlowCursor/React Bits Pro source or extra runtime is included. */
 (function (root) {
   'use strict';
 
-  const FADE_MS = 380;
-  const MAX_POINTS = 24;
-  const MAX_LENGTH = 110;
+  const SETTINGS = Object.freeze({ color: '#3000ff', secondaryColor: '#0f0330',
+    trailLength: 19, trailWidth: 9, trailTaper: .07, followSpeed: .26,
+    glowIntensity: 1.65, glowSpread: 3, hotspot: .32, brightness: .7,
+    opacity: .56, pulseSpeed: 1.1, noiseStrength: .215,
+    idleTimeout: 450, fadeDuration: 1300, blendMode: 'screen' });
+  const MAX_LENGTH = 240;
   const PIXEL_BUDGET = 4000000;
   const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
   const distance = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
@@ -12,72 +16,79 @@
     Math.abs(point.x) <= 10000000 && Math.abs(point.y) <= 10000000;
 
   function createTrail() {
-    let anchor = null;
-    let points = [];
+    let anchor = null, points = [], idle = 0, elapsed = 0, strength = .2;
 
     function reset() {
       anchor = null;
       points = [];
+      idle = 0;
+      elapsed = 0;
     }
 
     function trim() {
-      if (points.length > MAX_POINTS) points = points.slice(-MAX_POINTS);
       let length = 0;
-      for (let i = points.length - 1; i > 0; i--) {
-        const next = points[i];
-        const previous = points[i - 1];
-        const segment = distance(next, previous);
-        if (length + segment > MAX_LENGTH) {
-          const fraction = (MAX_LENGTH - length) / segment;
-          points[i - 1] = {
-            x: next.x + (previous.x - next.x) * fraction,
-            y: next.y + (previous.y - next.y) * fraction,
-            age: next.age + (previous.age - next.age) * fraction,
-            strength: next.strength + (previous.strength - next.strength) * fraction,
-          };
-          points = points.slice(i - 1);
-          break;
-        }
-        length += segment;
+      for (let i = 1; i < points.length; i++) length += distance(points[i], points[i - 1]);
+      if (length > MAX_LENGTH) {
+        const head = points.at(-1);
+        const scale = MAX_LENGTH / length;
+        points = points.map(p => ({ x: head.x + (p.x - head.x) * scale,
+          y: head.y + (p.y - head.y) * scale }));
       }
     }
 
     function snapshot() {
-      if (points.length < 2) {
+      const progress = clamp((idle - SETTINGS.idleTimeout) / SETTINGS.fadeDuration, 0, 1);
+      const alpha = 1 - progress * progress * (3 - 2 * progress);
+      if (!points.length || alpha <= 0) {
         points = [];
-        return { active: false, points: [] };
+        return { active: false, points: [], elapsed };
       }
       return {
-        active: true,
-        points: points.map(({ x, y, age, strength }) => ({
-          x, y, strength, alpha: Math.pow(Math.max(0, 1 - age / FADE_MS), 1.35),
-        })),
+        active: true, elapsed,
+        points: points.map(p => ({ ...p, strength, alpha })),
       };
     }
 
-    function frame(position, deltaMs = 16) {
+    function frame(position, deltaMs = 16, sample = true) {
       if (!validPoint(position)) {
         reset();
         return snapshot();
       }
       const delta = Number.isFinite(deltaMs) && deltaMs >= 0 ? deltaMs : 16;
       // A suspended tab must not draw a bridge from its old page position.
-      if (delta >= FADE_MS) reset();
-      points = points.map(point => ({ ...point, age: point.age + delta }))
-        .filter(point => point.age < FADE_MS);
+      if (delta >= SETTINGS.idleTimeout + SETTINGS.fadeDuration) reset();
+      elapsed += delta;
+      idle += delta;
       const current = { x: position.x, y: position.y };
       if (!anchor) {
         anchor = current;
         return snapshot();
       }
       const moved = distance(current, anchor);
-      if (moved > .15) {
-        const strength = clamp(.16 + moved / Math.max(delta, 1) * .28, .16, 1);
-        if (!points.length) points.push({ ...anchor, age: Math.min(delta, FADE_MS - 1), strength });
-        points.push({ ...current, age: 0, strength });
-        anchor = current;
+      // Input resets idle; the rendered tail updates geometry EVERY frame.
+      if (sample) {
+        idle = 0;
+        strength = clamp(.2 + moved / Math.max(delta, 1) * .28, .2, 1);
+      }
+      if (!points.length && moved > .000001 && idle < SETTINGS.idleTimeout) {
+        points = Array.from({ length: SETTINGS.trailLength }, (_, i) => {
+          const t = i / (SETTINGS.trailLength - 1);
+          return { x: anchor.x + (current.x - anchor.x) * t,
+            y: anchor.y + (current.y - anchor.y) * t };
+        });
+      }
+      if (points.length) {
+        points[points.length - 1] = current; // never smooth the attachment
+        if (moved > .001) {
+          const follow = 1 - Math.pow(1 - SETTINGS.followSpeed, Math.min(delta, 64) / (1000 / 60));
+          for (let i = points.length - 2; i >= 0; i--) {
+            points[i].x += (points[i + 1].x - points[i].x) * follow;
+            points[i].y += (points[i + 1].y - points[i].y) * follow;
+          }
+        }
         trim();
       }
+      anchor = current;
       return snapshot();
     }
 
@@ -124,49 +135,63 @@
       reset();
     }
 
-    function trace(points) {
-      ctx.beginPath();
-      ctx.moveTo(points[0].x, points[0].y);
-      for (let i = 1; i < points.length - 1; i++) {
-        const current = points[i];
-        const next = points[i + 1];
-        ctx.quadraticCurveTo(current.x, current.y, (current.x + next.x) / 2, (current.y + next.y) / 2);
+    function paint(state) {
+      const last = state.points.length - 1;
+      const time = state.elapsed / 1000;
+      const pulse = .94 + .06 * Math.sin(time * SETTINGS.pulseSpeed * Math.PI * 2);
+      const energy = state.points[last].alpha * SETTINGS.opacity * SETTINGS.brightness *
+        SETTINGS.glowIntensity * pulse * (.6 + state.points[last].strength * .4);
+      // Ripple is zero at the attachment so it never detaches from the pointer.
+      const points = state.points.map((p, i, all) => {
+        if (i === last) return p;
+        const next = all[i + 1];
+        const length = Math.max(.001, distance(p, next));
+        const ripple = Math.sin(time * 3 + i * .7) * Math.sin(i / last * Math.PI) *
+          SETTINGS.noiseStrength * SETTINGS.trailWidth;
+        return { x: p.x - (next.y - p.y) / length * ripple,
+          y: p.y + (next.x - p.x) / length * ripple };
+      });
+      // Merge tiny segments, especially the last one: skipping the final stroke
+      // would separate the glow from the pointer as its spring comes to rest.
+      const drawable = [{ ...points[0], progress: 0 }];
+      for (let i = 1; i <= last; i++) {
+        const point = { ...points[i], progress: i / last };
+        if (i === last) {
+          while (drawable.length > 1 && distance(drawable.at(-1), point) < .35) drawable.pop();
+        }
+        if (distance(drawable.at(-1), point) >= .35) drawable.push(point);
       }
-      const last = points[points.length - 1];
-      ctx.lineTo(last.x, last.y);
-    }
-
-    function paint(points) {
-      const tail = points[0];
-      const head = points[points.length - 1];
-      const energy = head.alpha * head.strength;
-      // One continuous path per pass avoids isolated glowing dots at sample points.
+      if (drawable.length < 2) return;
       ctx.lineCap = 'round';
       ctx.lineJoin = 'round';
-      ctx.globalCompositeOperation = 'source-over';
+      ctx.globalCompositeOperation = SETTINGS.blendMode;
       for (const pass of [
-        { width: 8, alpha: .19, blur: 8, rgb: '220, 212, 255' },
-        { width: 2.3, alpha: .5, blur: 3, rgb: '248, 247, 255' },
+        { width: SETTINGS.glowSpread, alpha: .18, blur: 27 },
+        { width: 1, alpha: .62, blur: 8 },
+        { width: SETTINGS.hotspot, alpha: 1, blur: 3 },
       ]) {
-        const gradient = ctx.createLinearGradient(tail.x, tail.y, head.x, head.y);
-        gradient.addColorStop(0, `rgba(${pass.rgb}, 0)`);
-        gradient.addColorStop(.4, `rgba(${pass.rgb}, ${energy * pass.alpha * .45})`);
-        gradient.addColorStop(1, `rgba(${pass.rgb}, ${energy * pass.alpha})`);
-        ctx.strokeStyle = gradient;
-        ctx.lineWidth = pass.width * (.72 + head.strength * .28);
-        ctx.shadowColor = `rgba(${pass.rgb}, ${energy * pass.alpha * .8})`;
-        ctx.shadowBlur = pass.blur * ratio;
-        trace(points);
-        ctx.stroke();
+        const gradient = ctx.createLinearGradient(points[0].x, points[0].y, points[last].x, points[last].y);
+        gradient.addColorStop(0, `rgba(15, 3, 48, ${energy * pass.alpha * .7})`);
+        gradient.addColorStop(1, `rgba(48, 0, 255, ${energy * pass.alpha})`);
+        for (let i = 1; i < drawable.length; i++) {
+          const a = drawable[i - 1], b = drawable[i];
+          const progress = b.progress;
+          const taper = SETTINGS.trailTaper + (1 - SETTINGS.trailTaper) * progress;
+          const alpha = energy * pass.alpha * progress;
+          ctx.strokeStyle = gradient;
+          ctx.lineWidth = SETTINGS.trailWidth * pass.width * taper;
+          ctx.shadowBlur = pass.blur * ratio;
+          ctx.shadowColor = `rgba(48, 0, 255, ${alpha * .6})`;
+          ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+        }
       }
       ctx.shadowBlur = 0;
     }
 
-    function frame(labelState, deltaMs) {
-      const center = validPoint(labelState) ? { x: labelState.x + 30, y: labelState.y + 22 } : null;
-      const state = trail.frame(center, deltaMs);
+    function frame(position, deltaMs, sample) {
+      const state = trail.frame(validPoint(position) ? position : null, deltaMs, sample);
       clear();
-      if (state.active) paint(state.points);
+      if (state.active) paint(state);
       return state.active;
     }
 
@@ -174,7 +199,7 @@
     return { frame, reset, resize };
   }
 
-  const api = { createTrail, mount };
+  const api = { createTrail, mount, SETTINGS };
   root.GiftLightTrail = api;
   if (typeof module === 'object' && module.exports) module.exports = api;
 })(globalThis);

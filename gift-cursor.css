@@ -1,4 +1,4 @@
-/* One spring-following arrow and gift label. Never intercepts page input. */
+/* One spring-following frosted arrow. Optional comparison toys never run by default. */
 .gift-cursor {
   position: fixed;
   inset: 0;
@@ -22,6 +22,7 @@
   pointer-events: none;
   will-change: transform;
 }
+.gift-cursor-label[hidden] { display: none; }
 .gift-cursor-arrow {
   width: 28px;
   height: 28px;

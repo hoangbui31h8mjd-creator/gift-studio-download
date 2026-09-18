@@ -6,7 +6,12 @@
   pointer-events: none;
   background: #000;
 }
-.shader-background canvas { display: block; }
+.shader-background canvas {
+  display: block;
+  opacity: 0;
+  transition: opacity .8s cubic-bezier(.22, .61, .36, 1);
+}
+.shader-background[data-ready="true"] canvas { opacity: 1; }
 .shader-background::after {
   content: "";
   position: absolute;
@@ -15,4 +20,7 @@
 }
 @media (forced-colors: active) {
   .shader-background { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .shader-background canvas { transition: none; }
 }

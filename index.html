@@ -6,32 +6,41 @@
   <meta name="theme-color" content="#0e0b15">
   <meta name="description" content="下载 Gift Studio 桌面应用。选择 Windows 或 Mac 版本，开始直播礼物与头像框创作。">
   <title>下载 Gift Studio · 直播礼物创作工作台</title>
-  <link rel="icon" type="image/png" href="./assets/gift-studio-logo-rounded.png">
-  <link rel="preload" href="./assets/fonts/smiley-sans.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="icon" type="image/png" href="./assets/brand/favicon-64.png">
+  <link rel="preload" href="./assets/fonts/gift-studio-headline.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="./assets/shadergradient/hdr/city.hdr" as="fetch" crossorigin>
+  <script src="./intro-sequence.js?v=45"></script>
   <script src="./layout-scale.js?v=25"></script>
-  <link rel="stylesheet" href="./styles.css?v=25">
-  <link rel="stylesheet" href="./shader-background.css?v=11">
+  <link rel="stylesheet" href="./styles.css?v=38">
+  <link rel="stylesheet" href="./shader-background.css?v=37">
   <link rel="stylesheet" href="./border-glow.css?v=25">
   <link rel="stylesheet" href="./glass-surfaces.css?v=25">
-  <link rel="stylesheet" href="./hero-title.css?v=25">
-  <link rel="stylesheet" href="./gift-cursor.css?v=27">
-  <link rel="stylesheet" href="./cursor-variants.css?v=32">
+  <link rel="stylesheet" href="./hero-title.css?v=36">
+  <link rel="stylesheet" href="./gift-cursor.css?v=37">
+  <link rel="stylesheet" href="./cursor-variants.css?v=37">
   <link rel="stylesheet" href="./cursor-preview.css?v=28">
+  <link rel="stylesheet" href="./gradual-blur.css?v=42">
+  <link rel="stylesheet" href="./intro-sequence.css?v=45">
   <script src="./releases.js?v=0.1.0" defer></script>
   <script src="./downloads.js" defer></script>
   <script src="./app.js?v=19" defer></script>
   <script src="./border-glow.js?v=6" defer></script>
-  <script src="./cursor-variants.js?v=32" defer></script>
-  <script src="./cursor-preview.js?v=32" defer></script>
-  <script src="./gift-cursor.js?v=35" defer></script>
-  <script src="./shader-background.js?v=11" defer></script>
+  <script src="./cursor-variants.js?v=37" defer></script>
+  <script src="./cursor-preview.js?v=37" defer></script>
+  <script src="./gift-cursor.js?v=40" defer></script>
+  <script src="./shader-background.js?v=44" defer></script>
 </head>
 <body id="top">
+  <div class="intro-loader" role="status" aria-live="polite">
+    <span class="intro-loader-brand" aria-hidden="true">GIFT STUDIO</span>
+    <span class="intro-loader-line" aria-hidden="true"></span>
+    <p>正在加载</p>
+  </div>
   <a class="skip-link" href="#downloads">跳转到下载</a>
   <div class="shader-background" aria-hidden="true"></div>
   <header class="site-header">
-    <a class="brand" href="#top" aria-label="Gift Studio 首页"><img class="brand-icon" src="./assets/gift-studio-logo-rounded.png" width="31" height="31" alt=""><span>Gift Studio</span></a>
-    <nav aria-label="主导航"><a href="#downloads" aria-current="page">下载</a><a href="./installation.html">安装指引 <span aria-hidden="true">↗</span></a></nav>
+    <a class="brand" href="#top" aria-label="Gift Studio 首页"><img class="brand-icon" src="./assets/brand/logo-128.webp" srcset="./assets/brand/logo-128.webp 128w, ./assets/brand/logo-256.webp 256w, ./assets/brand/logo-512.webp 512w" sizes="(max-width: 600px) 1.75rem, 1.9375rem" width="31" height="31" alt=""><span>Gift Studio</span></a>
+    <nav aria-label="主导航"><a href="#downloads" aria-current="page">下载</a></nav>
   </header>
 
   <main>
