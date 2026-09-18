@@ -7,10 +7,10 @@
     let timer = null;
     let failed = false;
     const ready = new Set();
-    // Keep each layer readable before introducing the next one. CSS finishes
-    // the last character at 1900ms, the background fade at 1200ms, and the
-    // lower content at 2000ms; these phases include short holds/blur removal.
-    const durations = { headline: 2300, background: 1500, content: 2200 };
+    // A -100ms hold overlaps adjacent reveals; it does not shorten them.
+    // The last character still finishes at 1900ms and the background still
+    // fades for 1200ms. Keep the lower content's 2000ms motion/blur cleanup.
+    const durations = { headline: 1800, background: 1100, content: 2200 };
     function enter(next) {
       if (timer !== null) cancel(timer);
       timer = null;
