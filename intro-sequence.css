@@ -10,6 +10,21 @@ html[data-intro="loading"] .intro-loader {
 }
 .intro-loader-brand { color: #e7ddfa; font-size: .75rem; letter-spacing: .26em; font-weight: 500; }
 .intro-loader p { margin: 0; font-size: .8125rem; color: #a79bb9; letter-spacing: .1em; }
+.intro-loader-slow, .intro-loader-failed { display: none; }
+html[data-intro-wait="slow"] .intro-loader-status { display: none; }
+html[data-intro-wait="slow"] .intro-loader-slow { display: block; }
+html[data-intro-wait="failed"] .intro-loader-status { display: none; }
+html[data-intro-wait="failed"] .intro-loader-failed,
+html[data-intro-wait="failed"] .intro-loader-retry { display: block; }
+html[data-intro-wait="failed"] .intro-loader-line::after { animation: none; }
+.intro-loader-retry {
+  display: none;
+  margin-top: .25rem; padding: .625rem 1rem; border: 1px solid #cdb4ff30;
+  border-radius: .625rem; color: #b9afc9; background: #ffffff06;
+  font: inherit; font-size: .75rem; cursor: pointer;
+}
+.intro-loader-retry:hover { color: #fff; border-color: #cdb4ff70; background: #ffffff0d; }
+.intro-loader-retry:focus-visible { outline: 2px solid #cdb4ff; outline-offset: 3px; }
 .intro-loader-line { width: 4rem; height: 2px; overflow: hidden; background: #cdb4ff15; border-radius: 2px; }
 .intro-loader-line::after {
   content: ""; display: block; width: 60%; height: 100%; border-radius: inherit;

@@ -9,18 +9,33 @@
   <link rel="icon" type="image/png" href="./assets/brand/favicon-64.png">
   <link rel="preload" href="./assets/fonts/gift-studio-headline.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="./assets/shadergradient/hdr/city.hdr" as="fetch" crossorigin>
-  <script src="./intro-sequence.js?v=45"></script>
+  <script src="./intro-sequence.js?v=46"></script>
+  <style>
+    /* The waiting/error surface must survive an external stylesheet failure. */
+    .intro-loader { display: none; }
+    html[data-intro="loading"] .intro-loader {
+      position: fixed; inset: 0; z-index: 30; display: grid; place-content: center;
+      justify-items: center; gap: 1.125rem; background: #06050a; color: #e7ddfa;
+    }
+    html[data-intro="loading"] { overflow: hidden; }
+    html[data-intro="loading"] :is(.site-header, main, .site-footer) { visibility: hidden; }
+    .intro-loader-slow, .intro-loader-failed, .intro-loader-retry { display: none; }
+    html[data-intro-wait="slow"] .intro-loader-status,
+    html[data-intro-wait="failed"] .intro-loader-status { display: none; }
+    html[data-intro-wait="slow"] .intro-loader-slow,
+    html[data-intro-wait="failed"] :is(.intro-loader-failed, .intro-loader-retry) { display: block; }
+  </style>
   <script src="./layout-scale.js?v=25"></script>
-  <link rel="stylesheet" href="./styles.css?v=38">
-  <link rel="stylesheet" href="./shader-background.css?v=37">
+  <link rel="stylesheet" href="./styles.css?v=38" data-intro-critical>
+  <link rel="stylesheet" href="./shader-background.css?v=37" data-intro-critical>
   <link rel="stylesheet" href="./border-glow.css?v=25">
   <link rel="stylesheet" href="./glass-surfaces.css?v=25">
-  <link rel="stylesheet" href="./hero-title.css?v=36">
+  <link rel="stylesheet" href="./hero-title.css?v=36" data-intro-critical>
   <link rel="stylesheet" href="./gift-cursor.css?v=37">
   <link rel="stylesheet" href="./cursor-variants.css?v=37">
   <link rel="stylesheet" href="./cursor-preview.css?v=28">
   <link rel="stylesheet" href="./gradual-blur.css?v=42">
-  <link rel="stylesheet" href="./intro-sequence.css?v=45">
+  <link rel="stylesheet" href="./intro-sequence.css?v=46" data-intro-critical>
   <script src="./releases.js?v=0.1.0" defer></script>
   <script src="./downloads.js" defer></script>
   <script src="./app.js?v=19" defer></script>
@@ -28,13 +43,16 @@
   <script src="./cursor-variants.js?v=37" defer></script>
   <script src="./cursor-preview.js?v=37" defer></script>
   <script src="./gift-cursor.js?v=40" defer></script>
-  <script src="./shader-background.js?v=44" defer></script>
+  <script src="./shader-background.js?v=44" defer data-intro-critical></script>
 </head>
 <body id="top">
   <div class="intro-loader" role="status" aria-live="polite">
     <span class="intro-loader-brand" aria-hidden="true">GIFT STUDIO</span>
     <span class="intro-loader-line" aria-hidden="true"></span>
-    <p>正在加载</p>
+    <p class="intro-loader-status">正在加载</p>
+    <p class="intro-loader-slow">资源加载较慢，请稍候…</p>
+    <p class="intro-loader-failed">资源加载失败，请重试</p>
+    <button class="intro-loader-retry" type="button" data-intro-retry>重新加载</button>
   </div>
   <a class="skip-link" href="#downloads">跳转到下载</a>
   <div class="shader-background" aria-hidden="true"></div>

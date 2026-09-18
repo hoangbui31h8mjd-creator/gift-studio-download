@@ -2,9 +2,10 @@
 (function (root) {
   'use strict';
 
-  function createSequence({ onPhase, schedule = setTimeout, cancel = clearTimeout, reducedMotion = false }) {
+  function createSequence({ onPhase, onSlow = () => {}, onError = () => {}, schedule = setTimeout, cancel = clearTimeout, reducedMotion = false }) {
     let phase = reducedMotion ? 'ready' : 'loading';
     let timer = null;
+    let failed = false;
     const ready = new Set();
     // Keep each layer readable before introducing the next one. CSS finishes
     // the last character at 1900ms, the background fade at 1200ms, and the
@@ -20,13 +21,22 @@
       }
     }
     onPhase(phase);
-    if (phase === 'loading') timer = schedule(() => enter('ready'), 8000);
+    // A slow first download is still a valid load. Warn, but keep accepting
+    // readiness signals. A confirmed failure stays on this surface for retry.
+    if (phase === 'loading') timer = schedule(() => { timer = null; onSlow(); }, 8000);
     return {
       get phase() { return phase; },
       signal(asset) {
-        if (phase !== 'loading' || !['fonts', 'background'].includes(asset)) return;
+        if (failed || phase !== 'loading' || !['fonts', 'background'].includes(asset)) return;
         ready.add(asset);
         if (ready.size === 2) enter('headline');
+      },
+      fail() {
+        if (failed || phase !== 'loading') return;
+        failed = true;
+        if (timer !== null) cancel(timer);
+        timer = null;
+        onError();
       },
       skip() { if (phase !== 'ready') enter('ready'); },
     };
@@ -136,6 +146,7 @@
         }
       }
       html.dataset.intro = phase;
+      if (phase !== 'loading') delete html.dataset.introWait;
       const loader = doc.querySelector('.intro-loader');
       if (loader) loader.hidden = phase !== 'loading';
       if (phase === 'ready') {
@@ -157,32 +168,56 @@
     // this small script fails to load, there is no data-intro and the page is usable.
     const sequence = createSequence({
       onPhase: display,
+      onSlow: () => { html.dataset.introWait = 'slow'; },
+      onError: () => { html.dataset.introWait = 'failed'; },
       reducedMotion: reduced.matches || contrast.matches || Boolean(deepLink),
       schedule: (fn, ms) => view.setTimeout(fn, ms),
       cancel: (token) => view.clearTimeout(token),
     });
     const skip = () => sequence.skip();
-    const key = (event) => { if (event.key === 'Tab' || event.key === 'Escape') skip(); };
-    const pageShow = (event) => { if (event.persisted) skip(); };
+    const settleActive = () => { if (sequence.phase !== 'loading') skip(); };
+    // Bind at script execution, not DOMContentLoaded: the deferred background
+    // bundle can fail before DOMContentLoaded; retry must already be usable.
+    const click = (event) => { if (event.target.closest?.('[data-intro-retry]')) view.location.reload(); };
+    const fail = () => sequence.fail();
+    const resourceError = (event) => {
+      if (event.target?.matches?.('script[data-intro-critical], link[rel="stylesheet"][data-intro-critical]')) {
+        fail();
+      } else if (event.filename) {
+        // A downloaded background bundle can fail at execution, too. Ignore
+        // unrelated errors and speculative preload failures.
+        const bundle = doc.querySelector('script[data-intro-critical]');
+        if (!bundle) return;
+        try {
+          const failed = new URL(event.filename, doc.baseURI);
+          const expected = new URL(bundle.src, doc.baseURI);
+          if (failed.origin === expected.origin && failed.pathname === expected.pathname) fail();
+        } catch (_) { /* not a URL belonging to the background bundle */ }
+      }
+    };
+    const key = (event) => { if (event.key === 'Tab' || event.key === 'Escape') settleActive(); };
+    const pageShow = (event) => { if (event.persisted) settleActive(); };
     const media = () => { if (reduced.matches || contrast.matches) skip(); };
     let observer;
     cleanup = () => {
       observer?.disconnect();
-      view.removeEventListener('resize', skip);
-      view.removeEventListener('pagehide', skip);
+      view.removeEventListener('resize', settleActive);
+      doc.removeEventListener('click', click);
+      view.removeEventListener('error', resourceError, true);
+      view.removeEventListener('pagehide', settleActive);
       view.removeEventListener('pageshow', pageShow);
       view.removeEventListener('keydown', key);
       reduced.removeEventListener('change', media);
       contrast.removeEventListener('change', media);
-      view.visualViewport?.removeEventListener('resize', skip);
+      view.visualViewport?.removeEventListener('resize', settleActive);
       doc.removeEventListener('DOMContentLoaded', bind);
     };
 
     function bind() {
-      if (sequence.phase === 'ready') return;
+      if (sequence.phase === 'ready' || html.dataset.introWait === 'failed') return;
       try {
         const host = doc.querySelector('.shader-background');
-        if (!host || !doc.fonts?.load) { skip(); return; }
+        if (!host || !doc.fonts?.load) { fail(); return; }
         for (const element of doc.querySelectorAll('.site-header, main, .site-footer')) {
           owned.push({ element, inert: element.inert, busy: element.getAttribute('aria-busy') });
           element.inert = true;
@@ -191,25 +226,27 @@
         // Observe first, then read: both cached-first-frame and delayed-frame
         // paths work. Rejected/late assets cannot replay the opening sequence.
         const background = () => {
-          if (host.dataset.renderMode === 'fallback') skip();
+          if (host.dataset.renderMode === 'fallback') fail();
           else if (host.dataset.ready === 'true') sequence.signal('background');
         };
         observer = new view.MutationObserver(background);
         observer.observe(host, { attributes: true, attributeFilter: ['data-ready', 'data-render-mode'] });
         background();
         doc.fonts.load('400 1em "Gift Studio Headline"', '让灵感，闪耀全场。')
-          .then(() => sequence.signal('fonts'), skip);
-      } catch (_) { skip(); }
+          .then(() => sequence.signal('fonts'), fail);
+      } catch (_) { fail(); }
     }
 
     if (sequence.phase !== 'ready') {
-      view.addEventListener('resize', skip, { passive: true });
-      view.addEventListener('pagehide', skip);
+      view.addEventListener('resize', settleActive, { passive: true });
+      doc.addEventListener('click', click);
+      view.addEventListener('error', resourceError, true);
+      view.addEventListener('pagehide', settleActive);
       view.addEventListener('pageshow', pageShow);
       view.addEventListener('keydown', key);
       reduced.addEventListener('change', media);
       contrast.addEventListener('change', media);
-      view.visualViewport?.addEventListener('resize', skip, { passive: true });
+      view.visualViewport?.addEventListener('resize', settleActive, { passive: true });
       if (doc.readyState === 'loading') doc.addEventListener('DOMContentLoaded', bind, { once: true });
       else bind();
     }
