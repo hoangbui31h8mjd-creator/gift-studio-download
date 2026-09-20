@@ -2,20 +2,20 @@
 window.GIFT_STUDIO_RELEASES = {
   "windows": {
     "available": true,
-    "url": "https://github.com/hoangbui31h8mjd-creator/gift-studio-download/releases/download/v0.1.0/Gift-Studio-0.1.0-windows-x64-setup.exe",
-    "version": "0.1.0",
+    "url": "https://github.com/hoangbui31h8mjd-creator/gift-studio-download/releases/download/v0.1.1/Gift-Studio-0.1.1-windows-x64-setup.exe",
+    "version": "0.1.1",
     "system": "Windows 10 / 11",
     "architecture": "x64",
-    "bytes": 364666748,
-    "sha256": "8de5177bbd25e6edb1247b50f0a580d9c19561fed6e0b1f7e040369061e987be"
+    "bytes": 364684154,
+    "sha256": "f01a605301fc590a37812723b5f1602a8b03ba7f9080058ec0871b5a73686a7d"
   },
   "mac": {
     "available": true,
-    "url": "https://github.com/hoangbui31h8mjd-creator/gift-studio-download/releases/download/v0.1.0/Gift-Studio-0.1.0-mac-arm64.dmg",
-    "version": "0.1.0",
+    "url": "https://github.com/hoangbui31h8mjd-creator/gift-studio-download/releases/download/v0.1.1/Gift-Studio-0.1.1-mac-arm64.dmg",
+    "version": "0.1.1",
     "system": "macOS 14+",
     "architecture": "Apple Silicon (arm64)，不支持 Intel",
-    "bytes": 373744060,
-    "sha256": "6e1e7b08e402692d22b2427c7e9ba66027617ab3c571e2f84f31205e2892120c"
+    "bytes": 373129082,
+    "sha256": "5259c1717ff06705ec5b5acfa81b55d8a0c0c9eccae8f9811beb3c4cab7ce532"
   }
 };
