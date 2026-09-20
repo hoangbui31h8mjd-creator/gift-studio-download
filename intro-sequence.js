@@ -232,7 +232,7 @@
         observer = new view.MutationObserver(background);
         observer.observe(host, { attributes: true, attributeFilter: ['data-ready', 'data-render-mode'] });
         background();
-        doc.fonts.load('400 1em "Gift Studio Headline"', '让灵感，闪耀全场。')
+        doc.fonts.load('400 1em "Gift Studio Headline"', '让直播设计，更快一步。')
           .then(() => sequence.signal('fonts'), fail);
       } catch (_) { fail(); }
     }
