@@ -10,3 +10,5 @@ downloads/
 config/
 app-api-keys/
 desktop-source/
+.gift-studio-publish.lock
+.publish-downloads-*/
