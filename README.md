@@ -4,15 +4,16 @@
 
 公开入口：https://hoangbui31h8mjd-creator.github.io/gift-studio-download/
 
-## 当前记录（2026-09-22）
+## 当前记录（2026-10-22）
 
-- 产品附件版本：0.1.1。地址、字节数、SHA256以 [releases.js](releases.js) 与 [SHA256SUMS.txt](SHA256SUMS.txt) 为准。
+- 当前下载配置：Mac 0.1.2 测试版（prerelease），包含「直播礼物采买 → 座驾礼物」入口；按用户要求先发布 Mac，Windows 保留可用的 0.1.1，新 Windows 包仅本地保留。
+- Mac 0.1.2 GitHub Release 附件已发布，远程字节数和 SHA256 与本地一致。实际下载地址、字节数、SHA256以 [releases.js](releases.js) 与 [SHA256SUMS.txt](SHA256SUMS.txt) 为准。
 - Windows：Windows 10/11 x64；Mac：macOS14+ Apple Silicon，不支持Intel Mac。
 - 应用内置Python、图像依赖与默认抠图模型；AI创作需要联网和使用者自己的API Key。
 - Mac为ad-hoc签名、未公证；Windows未发布者签名，当前材料不提供完整Windows实机安装至导出的验收记录。文件完整性不代替目标机验证。
 - 9/21已更新首页为“让直播设计，更快一步。”及AI一站完成说明；标题、字体与入场的实际内容以本仓库文件为准，不从设计副本旧README复制。
 
-这是本次文档整理时的本地仓库状态；本次未推送或重新核验线上。产品用户确认与实际检查边界分别记录，不因为整理文档重开旧效果审核。
+2026-10-22 已上传并发布 Mac 0.1.2 附件；本次网页提交将 Mac 下载更新为新版本，Windows 元数据与原 0.1.1 完全相同。GitHub Pages 从本仓库 main 分支根目录自动发布；Pages 构建和线上文件另行核对。产品用户确认与实际检查边界分别记录，不因为整理文档重开旧效果审核。
 
 ## 维护规则
 

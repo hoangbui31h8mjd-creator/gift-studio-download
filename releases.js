@@ -1,4 +1,4 @@
-// Public test downloads. This website does not store or collect API keys.
+// Public downloads: macOS 0.1.2, Windows 0.1.1. No private configuration is hosted here.
 window.GIFT_STUDIO_RELEASES = {
   "windows": {
     "available": true,
@@ -11,11 +11,11 @@ window.GIFT_STUDIO_RELEASES = {
   },
   "mac": {
     "available": true,
-    "url": "https://github.com/hoangbui31h8mjd-creator/gift-studio-download/releases/download/v0.1.1/Gift-Studio-0.1.1-mac-arm64.dmg",
-    "version": "0.1.1",
+    "url": "https://github.com/hoangbui31h8mjd-creator/gift-studio-download/releases/download/v0.1.2/Gift-Studio-0.1.2-mac-arm64.dmg",
+    "version": "0.1.2",
     "system": "macOS 14+",
     "architecture": "Apple Silicon (arm64)，不支持 Intel",
-    "bytes": 373129082,
-    "sha256": "5259c1717ff06705ec5b5acfa81b55d8a0c0c9eccae8f9811beb3c4cab7ce532"
+    "bytes": 374840921,
+    "sha256": "528195e59159be4a4299110907b371c1f875675994f37b6506ffc40d813194ce"
   }
 };
